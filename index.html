@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Passage — Privacy Primer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #f7f7f5;
+  --mid: #888;
+  --rule: 2px solid var(--black);
+  --rule-thin: 1px solid #ccc;
+  --display: 'Barlow Condensed', sans-serif;
+  --body: 'Barlow', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.65;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--black);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+  mix-blend-mode: difference;
+}
+
+.cursor.hover { width: 40px; height: 40px; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  background: var(--white);
+  border-bottom: var(--rule);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: stretch;
+}
+
+.nav-logo {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--black);
+  padding: 0.9rem 1.5rem;
+  border-right: var(--rule);
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  padding: 0 1.5rem;
+  align-items: center;
+}
+
+.nav-links li { border-right: 1px solid #ddd; }
+
+.nav-links a {
+  display: block;
+  padding: 0.9rem 1.2rem;
+  font-family: var(--display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.nav-links a:hover { color: var(--white); background: var(--black); }
+
+.nav-right {
+  border-left: var(--rule);
+  padding: 0.9rem 1.5rem;
+  font-family: var(--display);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  display: flex;
+  align-items: center;
+}
+
+/* HERO */
+.hero {
+  padding-top: 53px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  border-bottom: var(--rule);
+}
+
+.hero-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: var(--rule);
+}
+
+.hero-left {
+  padding: 3rem 2.5rem;
+  border-right: var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-tag {
+  font-family: var(--display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+.hero-big-text {
+  font-family: var(--display);
+  font-size: clamp(6rem, 14vw, 16rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--black);
+  opacity: 0;
+  animation: fadeIn 0.5s 0.1s forwards;
+}
+
+.hero-right {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 4.5vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 0.5s 0.3s forwards;
+}
+
+.hero-sub {
+  font-size: 0.95rem;
+  color: #444;
+  max-width: 46ch;
+  line-height: 1.75;
+  padding-top: 2rem;
+  border-top: var(--rule-thin);
+  opacity: 0;
+  animation: fadeIn 0.5s 0.5s forwards;
+}
+
+.hero-bottom {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.hero-stat {
+  padding: 1.5rem 2rem;
+  border-right: 1px solid #ddd;
+}
+
+.hero-stat:last-child { border-right: none; }
+
+.hero-stat-num {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.hero-stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* SECTION HEADER */
+.section-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  border-bottom: var(--rule);
+}
+
+.section-num {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  padding: 0.8rem 1.5rem;
+  border-right: var(--rule);
+  color: var(--mid);
+}
+
+.section-title-bar {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.5rem;
+}
+
+/* MANIFESTO */
+.manifesto-wrap { border-bottom: var(--rule); }
+
+.manifesto-body {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.manifesto-left {
+  padding: 4rem 2.5rem;
+  border-right: var(--rule);
+}
+
+.manifesto-big {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(3rem, 6vw, 7rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+
+.manifesto-sub {
+  font-family: var(--body);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--mid);
+  margin-top: 2rem;
+  line-height: 1.6;
+  max-width: 24ch;
+}
+
+.manifesto-right {
+  padding: 4rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 3rem;
+  align-content: start;
+}
+
+.manifesto-p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #333;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+.manifesto-p.visible { opacity: 1; transform: none; }
+.manifesto-p.full { grid-column: 1 / -1; }
+.manifesto-p strong { font-weight: 600; color: var(--black); }
+
+/* WHO */
+.who-wrap { border-bottom: var(--rule); }
+
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.who-card {
+  padding: 2.5rem 2rem;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  transition: background 0.15s, color 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.who-card:nth-child(3n) { border-right: none; }
+.who-card:nth-child(n+4) { border-bottom: none; }
+.who-card:hover { background: var(--black); color: var(--white); }
+.who-card:hover .who-label, .who-card:hover .who-desc { color: rgba(247,247,245,0.5); }
+.who-card:hover .who-bg-num { color: rgba(255,255,255,0.05); }
+
+.who-bg-num {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 5rem;
+  line-height: 1;
+  color: #e8e8e6;
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  transition: color 0.15s;
+  pointer-events: none;
+}
+
+.who-label {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.5rem;
+  transition: color 0.15s;
+}
+
+.who-title {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+  line-height: 1.1;
+}
+
+.who-desc {
+  font-size: 0.84rem;
+  color: #555;
+  line-height: 1.6;
+  transition: color 0.15s;
+}
+
+/* TOOLS */
+.tools-wrap { border-bottom: var(--rule); }
+
+.tool-category { border-bottom: 1px solid #ccc; }
+.tool-category:last-child { border-bottom: none; }
+
+.tool-cat-header {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.tool-cat-header:hover { background: #f0f0ee; }
+
+.tool-cat-num {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 0.72rem;
+  color: var(--mid);
+  padding: 1.2rem;
+  border-right: 1px solid #ddd;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+.tool-cat-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1.2rem 1.8rem;
+}
+
+.tool-cat-meta {
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--display);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+.tool-cat-arrow { transition: transform 0.3s; }
+.tool-category.open .tool-cat-arrow { transform: rotate(180deg); }
+
+.tool-list { display: none; border-top: 1px solid #ddd; }
+.tool-category.open .tool-list { display: block; }
+
+.tool-item {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  align-items: start;
+  border-bottom: 1px solid #e8e8e6;
+  transition: background 0.15s;
+}
+
+.tool-item:last-child { border-bottom: none; }
+.tool-item:hover { background: #f2f2f0; }
+
+.tool-idx {
+  font-family: var(--display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ccc;
+  padding: 1.5rem 0;
+  text-align: center;
+  border-right: 1px solid #e8e8e6;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 1.6rem;
+}
+
+.tool-body { padding: 1.4rem 1.8rem; }
+
+.tool-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.tool-desc {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+.tool-url {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: var(--display);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tool-url:hover { color: var(--black); border-color: var(--black); }
+
+.tool-badges {
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-end;
+}
+
+.badge {
+  font-family: var(--display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.badge-free { border-color: var(--black); color: var(--black); }
+.badge-open { border-color: #aaa; color: #aaa; }
+.badge-paid { background: var(--black); color: var(--white); border-color: var(--black); }
+.badge-crypto { border-color: #aaa; color: #aaa; border-style: dashed; }
+
+/* FEED */
+.feed-wrap { border-bottom: var(--rule); }
+
+.feed-controls {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+}
+
+.feed-btn {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.5rem;
+  background: none;
+  border: none;
+  border-right: 1px solid #ddd;
+  color: var(--mid);
+  cursor: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.feed-btn.active, .feed-btn:hover { background: var(--black); color: var(--white); }
+
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.feed-card {
+  padding: 2rem;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  transition: background 0.15s;
+  min-height: 180px;
+}
+
+.feed-card:hover { background: #f0f0ee; }
+.feed-card:nth-child(3n) { border-right: none; }
+
+.feed-card a {
+  position: absolute;
+  inset: 0;
+  text-decoration: none;
+}
+
+.feed-source {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.6rem;
+}
+
+.feed-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.6rem;
+  color: var(--black);
+}
+
+.feed-desc {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feed-date {
+  font-family: var(--display);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #bbb;
+  margin-top: 1rem;
+}
+
+.feed-loading {
+  grid-column: 1/-1;
+  padding: 4rem 2rem;
+  font-family: var(--display);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid #ddd;
+  border-top-color: var(--black);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* FOOTER */
+footer {
+  border-top: var(--rule);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.footer-cell {
+  padding: 2rem 1.8rem;
+  border-right: 1px solid #ddd;
+  font-size: 0.78rem;
+  color: var(--mid);
+  line-height: 1.7;
+}
+
+.footer-cell:last-child { border-right: none; }
+.footer-cell a { color: var(--mid); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.footer-cell a:hover { color: var(--black); border-color: var(--black); }
+
+.footer-brand {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--black);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-main { grid-template-columns: 1fr; }
+  .hero-left { border-right: none; border-bottom: var(--rule); }
+  .hero-bottom { grid-template-columns: 1fr 1fr; }
+  .manifesto-body { grid-template-columns: 1fr; }
+  .manifesto-left { border-right: none; border-bottom: var(--rule); }
+  .manifesto-right { grid-template-columns: 1fr; }
+  .who-grid { grid-template-columns: 1fr 1fr; }
+  .who-card:nth-child(2n) { border-right: none; }
+  .who-card:nth-child(n+5) { border-bottom: none; }
+  .feed-grid { grid-template-columns: 1fr 1fr; }
+  .feed-card:nth-child(2n) { border-right: none; }
+  footer { grid-template-columns: 1fr; }
+  .footer-cell { border-right: none; border-bottom: 1px solid #ddd; }
+  .nav-right { display: none; }
+}
+
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .who-grid { grid-template-columns: 1fr; }
+  .who-card { border-right: none; }
+  .feed-grid { grid-template-columns: 1fr; }
+  .feed-card { border-right: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="#" class="nav-logo">Free Passage</a>
+  <ul class="nav-links">
+    <li><a href="#manifesto">Manifesto</a></li>
+    <li><a href="#who">Who</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#markets">Markets</a></li>
+    <li><a href="#news">News</a></li>
+  </ul>
+  <div class="nav-right">No tracking · No cookies</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-main">
+    <div class="hero-left">
+      <div class="hero-tag">A Privacy Primer — Vol. I</div>
+      <div class="hero-big-text">FREE<br>PAS<br>SAGE</div>
+    </div>
+    <div class="hero-right">
+      <h1 class="hero-title">Your Silence<br>Is Not<br>Consent.</h1>
+      <p class="hero-sub">Governments are dismantling the conditions for private thought. This is a practical guide for anyone who believes that what you read, say, and organise should remain your own business — not a dataset.</p>
+    </div>
+  </div>
+  <div class="hero-bottom">
+    <div class="hero-stat">
+      <span class="hero-stat-num">147</span>
+      <span class="hero-stat-label">Countries with mass surveillance</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">0</span>
+      <span class="hero-stat-label">Reasons needed to want privacy</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">23</span>
+      <span class="hero-stat-label">Curated open-source tools</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">∞</span>
+      <span class="hero-stat-label">Your right to remain yourself</span>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<div class="manifesto-wrap" id="manifesto">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-bar">Manifesto</div>
+  </div>
+  <div class="manifesto-body">
+    <div class="manifesto-left">
+      <div class="manifesto-big">Privacy<br>is not<br>a crime.</div>
+      <div class="manifesto-sub">It is the condition under which everything else — thought, speech, dissent — becomes possible.</div>
+    </div>
+    <div class="manifesto-right">
+      <p class="manifesto-p full">Privacy is not the refuge of those with something to hide. It is the condition under which people think freely, speak honestly, organise collectively, and live without fear. When that condition erodes, something irreversible happens to society — not all at once, but incrementally, in the small self-censorships that accumulate into silence.</p>
+      <p class="manifesto-p">Governments are moving to dismantle end-to-end encryption, require identity verification for ordinary online activity, and build the infrastructure of mass surveillance under the banner of safety. <strong>The banner changes. The infrastructure remains.</strong> Iran can cut 80 million people off from the open internet with a single order. That capability was not built overnight — it was assembled quietly, justified incrementally, normalised before anyone noticed the door closing.</p>
+      <p class="manifesto-p">The playbook is now being applied in liberal democracies. The UK proposes mandatory age verification — effectively a digital ID for the entire internet — framed as child protection. Similar legislation moves in the EU and US. Once infrastructure exists to verify identity before access, the question of <em>what</em> it restricts becomes purely political, answered by whoever holds power next. VPN bans are already being discussed as the logical next step.</p>
+      <p class="manifesto-p">The people who need privacy most are not criminals. Ross Ulbricht spent a decade in federal prison. The developers of Tornado Cash — a privacy tool, open-source code, mathematics — were prosecuted for writing software. <strong>Code is speech. Mathematics is not a crime.</strong> When governments jail developers for publishing privacy tools, the message to every engineer is explicit: build nothing that limits our surveillance.</p>
+      <p class="manifesto-p">This site does not offer paranoia. It offers tools. Practical, well-tested, increasingly necessary. <strong>Use what you need. Share what helps.</strong> Privacy is not a problem to solve once — it is a habit to maintain. And the time to build that habit is before the option is removed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHO -->
+<div class="who-wrap" id="who">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-bar">Who This Is For</div>
+  </div>
+  <div class="who-grid">
+    <div class="who-card reveal">
+      <div class="who-bg-num">01</div>
+      <div class="who-label">Press & Research</div>
+      <div class="who-title">Journalists</div>
+      <div class="who-desc">Protecting sources, securing communications, keeping investigations confidential in an era of state surveillance.</div>
+    </div>
+    <div class="who-card reveal">
+      <div class="who-bg-num">02</div>
+      <div class="who-label">Civil Society</div>
+      <div class="who-title">Activists</div>
+      <div class="who-desc">Coordinating safely in environments where assembly and dissent carry real risk of retaliation.</div>
+    </div>
+    <div class="who-card reveal">
+      <div class="who-bg-num">03</div>
+      <div class="who-label">Under Threat</div>
+      <div class="who-title">Survivors</div>
+      <div class="who-desc">Domestic abuse survivors and others who need to exist digitally without being located or tracked.</div>
+    </div>
+    <div class="who-card reveal">
+      <div class="who-bg-num">04</div>
+      <div class="who-label">Professions</div>
+      <div class="who-title">Legal & Medical</div>
+      <div class="who-desc">Maintaining client and patient confidentiality when data breaches and surveillance are routine.</div>
+    </div>
+    <div class="who-card reveal">
+      <div class="who-bg-num">05</div>
+      <div class="who-label">Repressed Regions</div>
+      <div class="who-title">Dissidents</div>
+      <div class="who-desc">Anyone living under a regime that monitors religion, sexuality, ethnicity, or political opinion.</div>
+    </div>
+    <div class="who-card reveal">
+      <div class="who-bg-num">06</div>
+      <div class="who-label">Default</div>
+      <div class="who-title">Everyone</div>
+      <div class="who-desc">You need no reason. Privacy is a right, not a privilege requiring justification to anyone.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tools-wrap" id="tools">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-bar">The Toolkit — Curated, Open-Source-First. No Affiliate Links.</div>
+  </div>
+
+  <div class="tool-category open reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">A</div>
+      <div class="tool-cat-name">VPN & Network Privacy</div>
+      <div class="tool-cat-meta"><span>5 Tools</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">Mullvad</div>
+          <div class="tool-desc">No accounts. No logs. Pay anonymously with cash or crypto. Audited repeatedly. Trusted by security professionals worldwide.</div>
+          <a href="https://mullvad.net" target="_blank" rel="noopener" class="tool-url">mullvad.net ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-paid">Paid</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">Proton VPN</div>
+          <div class="tool-desc">Swiss-based, open-source, with a usable free tier. Strong no-logs policy independently audited. Founded by CERN scientists.</div>
+          <a href="https://protonvpn.com" target="_blank" rel="noopener" class="tool-url">protonvpn.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free tier</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">03</div>
+        <div class="tool-body">
+          <div class="tool-name">NYM VPN</div>
+          <div class="tool-desc">Built on the NYM mixnet — goes beyond VPNs by obscuring traffic patterns and metadata at the network layer. Designed to resist surveillance-state-level adversaries.</div>
+          <a href="https://nymvpn.com" target="_blank" rel="noopener" class="tool-url">nymvpn.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free tier</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">04</div>
+        <div class="tool-body">
+          <div class="tool-name">Sentinel dVPN</div>
+          <div class="tool-desc">Decentralised VPN network where bandwidth is provided by independent nodes. No central company to subpoena, no single infrastructure to block or seize.</div>
+          <a href="https://sentinel.co" target="_blank" rel="noopener" class="tool-url">sentinel.co ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-crypto">dVPN</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">05</div>
+        <div class="tool-body">
+          <div class="tool-name">Tor Browser</div>
+          <div class="tool-desc">Routes traffic through multiple encrypted relays. Slower by design, structurally anonymous. The gold standard for high-risk browsing.</div>
+          <a href="https://torproject.org" target="_blank" rel="noopener" class="tool-url">torproject.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tool-category reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">B</div>
+      <div class="tool-cat-name">Encrypted Messaging & Email</div>
+      <div class="tool-cat-meta"><span>3 Tools</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">Signal</div>
+          <div class="tool-desc">The standard. End-to-end encrypted by default. Disappearing messages. Open-source protocol. Non-profit organisation.</div>
+          <a href="https://signal.org" target="_blank" rel="noopener" class="tool-url">signal.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">Session</div>
+          <div class="tool-desc">No phone number required. Decentralised network. Suitable when even Signal's metadata could compromise safety.</div>
+          <a href="https://getsession.org" target="_blank" rel="noopener" class="tool-url">getsession.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">03</div>
+        <div class="tool-body">
+          <div class="tool-name">Proton Mail</div>
+          <div class="tool-desc">End-to-end encrypted email. Swiss jurisdiction. Zero-knowledge architecture — even Proton cannot read your messages.</div>
+          <a href="https://proton.me" target="_blank" rel="noopener" class="tool-url">proton.me ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free tier</span><span class="badge badge-open">Open src</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tool-category reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">C</div>
+      <div class="tool-cat-name">Privacy-Preserving Finance</div>
+      <div class="tool-cat-meta"><span>5 Tools</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">Monero (XMR)</div>
+          <div class="tool-desc">The only major cryptocurrency with privacy as the default. Transactions are unlinkable and untraceable by design, not optional setting.</div>
+          <a href="https://getmonero.org" target="_blank" rel="noopener" class="tool-url">getmonero.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-crypto">Crypto</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">Zcash (ZEC)</div>
+          <div class="tool-desc">Privacy-focused cryptocurrency using zk-SNARKs — cryptographic proofs that validate transactions without revealing sender, recipient, or amount. Shielded transactions are mathematically private.</div>
+          <a href="https://z.cash" target="_blank" rel="noopener" class="tool-url">z.cash ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-crypto">Crypto</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">03</div>
+        <div class="tool-body">
+          <div class="tool-name">Bisq</div>
+          <div class="tool-desc">Decentralised, peer-to-peer Bitcoin exchange. No KYC. No company. No single point of failure or seizure.</div>
+          <a href="https://bisq.network" target="_blank" rel="noopener" class="tool-url">bisq.network ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-crypto">Crypto</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">04</div>
+        <div class="tool-body">
+          <div class="tool-name">Cake Wallet</div>
+          <div class="tool-desc">Open-source mobile wallet with native Monero and Zcash support and built-in exchange. No accounts required.</div>
+          <a href="https://cakewallet.com" target="_blank" rel="noopener" class="tool-url">cakewallet.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">05</div>
+        <div class="tool-body">
+          <div class="tool-name">Unstoppable Wallet</div>
+          <div class="tool-desc">Non-custodial, open-source multi-chain wallet. Your keys, your coins. Supports Monero, Zcash, Bitcoin, and dozens of others. No registration, no data collection.</div>
+          <a href="https://unstoppable.money" target="_blank" rel="noopener" class="tool-url">unstoppable.money ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tool-category reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">D</div>
+      <div class="tool-cat-name">Browser & Search</div>
+      <div class="tool-cat-meta"><span>6 Tools</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">Mullvad Browser</div>
+          <div class="tool-desc">Built with the Tor Project to minimise fingerprinting. Strips out identifiers that make your browser unique — designed to make you look like everyone else, with or without a VPN.</div>
+          <a href="https://mullvad.net/browser" target="_blank" rel="noopener" class="tool-url">mullvad.net/browser ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">LibreWolf</div>
+          <div class="tool-desc">A hardened Firefox fork with privacy settings pre-configured to sane defaults. No telemetry, no sponsored content, uBlock Origin included. For users who want Firefox done right, out of the box.</div>
+          <a href="https://librewolf.net" target="_blank" rel="noopener" class="tool-url">librewolf.net ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">03</div>
+        <div class="tool-body">
+          <div class="tool-name">Firefox + uBlock Origin</div>
+          <div class="tool-desc">The most practical privacy setup for everyday use. Open-source, fully customisable, compatible with the best content blockers.</div>
+          <a href="https://firefox.com" target="_blank" rel="noopener" class="tool-url">firefox.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">04</div>
+        <div class="tool-body">
+          <div class="tool-name">Brave</div>
+          <div class="tool-desc">Chromium-based with aggressive tracking protection built in. Best choice for migrating from Chrome.</div>
+          <a href="https://brave.com" target="_blank" rel="noopener" class="tool-url">brave.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">05</div>
+        <div class="tool-body">
+          <div class="tool-name">SearXNG</div>
+          <div class="tool-desc">Open-source metasearch engine. No tracking, no profiles. Queries multiple engines without identifying you to any of them.</div>
+          <a href="https://searxng.org" target="_blank" rel="noopener" class="tool-url">searxng.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">06</div>
+        <div class="tool-body">
+          <div class="tool-name">DuckDuckGo</div>
+          <div class="tool-desc">The accessible entry point. No search history. No user profiles. Better than Google by every measurable privacy metric.</div>
+          <a href="https://duckduckgo.com" target="_blank" rel="noopener" class="tool-url">duckduckgo.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tool-category reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">E</div>
+      <div class="tool-cat-name">Operating Systems</div>
+      <div class="tool-cat-meta"><span>3 Tools</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">Tails OS</div>
+          <div class="tool-desc">Amnesic live OS. Runs from USB. Leaves no trace on the host machine. Standard issue for journalists in conflict zones.</div>
+          <a href="https://tails.boum.org" target="_blank" rel="noopener" class="tool-url">tails.boum.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">Qubes OS</div>
+          <div class="tool-desc">Security through compartmentalisation. Each application runs in an isolated virtual machine. The serious user's desktop of choice.</div>
+          <a href="https://qubes-os.org" target="_blank" rel="noopener" class="tool-url">qubes-os.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">03</div>
+        <div class="tool-body">
+          <div class="tool-name">GrapheneOS</div>
+          <div class="tool-desc">Security-hardened Android for Pixel devices. Sandboxed Google Play. The most private smartphone OS available to consumers.</div>
+          <a href="https://grapheneos.org" target="_blank" rel="noopener" class="tool-url">grapheneos.org ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKETS -->
+<div class="tools-wrap" id="markets">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-bar">Markets — Spend & Trade Without Surveillance</div>
+  </div>
+
+  <div class="tool-category open reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">F</div>
+      <div class="tool-cat-name">Privacy-Respecting Markets & Directories</div>
+      <div class="tool-cat-meta"><span>2 Resources</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">Monerica</div>
+          <div class="tool-desc">A curated directory of businesses, services, and merchants that accept Monero. From VPS hosting to physical goods — a map of the privacy economy. If you want to live on XMR, start here.</div>
+          <a href="https://monerica.com" target="_blank" rel="noopener" class="tool-url">monerica.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-crypto">XMR</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">KYCNot.me</div>
+          <div class="tool-desc">A directory of exchanges, services, and platforms that do not require Know Your Customer identity verification. Filter by asset, category, and trust level. Find where to trade without handing over your passport.</div>
+          <a href="https://kycnot.me" target="_blank" rel="noopener" class="tool-url">kycnot.me ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-crypto">No KYC</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEED -->
+<div class="feed-wrap" id="news">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-bar">Intelligence — Live Feed, No Algorithm</div>
+  </div>
+  <div class="feed-controls">
+    <button class="feed-btn active" data-source="all">All Sources</button>
+    <button class="feed-btn" data-source="eff">EFF</button>
+    <button class="feed-btn" data-source="privacy">RestorePrivacy</button>
+    <button class="feed-btn" data-source="techdirt">Techdirt</button>
+  </div>
+  <div class="feed-grid" id="feedGrid">
+    <div class="feed-loading"><div class="spinner"></div>Fetching latest stories</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-cell">
+    <span class="footer-brand">Free Passage</span>
+    A public resource. No tracking.<br>No cookies. No surveillance. Ever.
+  </div>
+  <div class="footer-cell">
+    Maintained in the belief that privacy is a precondition of human dignity — not a feature to be unlocked with a subscription.<br><br>
+    <a href="https://ssd.eff.org" target="_blank" rel="noopener">EFF Surveillance Self-Defense ↗</a>
+  </div>
+  <div class="footer-cell">
+    Further reading:<br>
+    <a href="https://privacyguides.org" target="_blank" rel="noopener">Privacy Guides ↗</a><br>
+    <a href="https://epic.org" target="_blank" rel="noopener">EPIC ↗</a><br>
+    <a href="https://eff.org" target="_blank" rel="noopener">Electronic Frontier Foundation ↗</a>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+let mx = -100, my = -100;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+document.querySelectorAll('a, button, .tool-cat-header, .who-card').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Accordions
+function toggleCat(h) { h.parentElement.classList.toggle('open'); }
+
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal, .manifesto-p').forEach(el => obs.observe(el));
+
+// RSS
+const FEEDS = {
+  eff: { name: 'EFF', url: 'https://www.eff.org/rss/updates.xml' },
+  privacy: { name: 'RestorePrivacy', url: 'https://restoreprivacy.com/feed/' },
+  techdirt: { name: 'Techdirt', url: 'https://www.techdirt.com/feed/' }
+};
+
+let allItems = [], currentFilter = 'all';
+
+async function fetchFeed(key, feed) {
+  try {
+    const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`);
+    const d = await r.json();
+    const xml = new DOMParser().parseFromString(d.contents, 'text/xml');
+    return [...xml.querySelectorAll('item')].slice(0, 8).map(item => ({
+      source: feed.name, sourceKey: key,
+      title: item.querySelector('title')?.textContent?.trim() || '',
+      desc: (item.querySelector('description')?.textContent || '').replace(/<[^>]+>/g, '').trim().slice(0, 180),
+      link: item.querySelector('link')?.textContent?.trim() || '#',
+      date: item.querySelector('pubDate')?.textContent || ''
+    }));
+  } catch(e) { return []; }
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  catch(e) { return ''; }
+}
+
+function renderFeed() {
+  const grid = document.getElementById('feedGrid');
+  const items = currentFilter === 'all' ? allItems : allItems.filter(i => i.sourceKey === currentFilter);
+  if (!items.length) {
+    grid.innerHTML = '<div class="feed-loading" style="animation:none">No stories found.</div>';
+    return;
+  }
+  grid.innerHTML = items.slice(0, 12).map(item => `
+    <div class="feed-card">
+      <div class="feed-source">${item.source}</div>
+      <div class="feed-title">${item.title}</div>
+      <div class="feed-desc">${item.desc}</div>
+      <div class="feed-date">${fmtDate(item.date)}</div>
+      <a href="${item.link}" target="_blank" rel="noopener" aria-label="${item.title}"></a>
+    </div>
+  `).join('');
+  document.querySelectorAll('.feed-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+}
+
+async function loadFeeds() {
+  const results = await Promise.allSettled(Object.entries(FEEDS).map(([k,f]) => fetchFeed(k,f)));
+  allItems = results.filter(r => r.status === 'fulfilled').flatMap(r => r.value)
+    .sort((a,b) => new Date(b.date) - new Date(a.date));
+  if (!allItems.length) {
+    document.getElementById('feedGrid').innerHTML = `<div class="feed-loading" style="animation:none">Feeds unavailable. Visit <a href="https://eff.org" target="_blank" style="color:var(--black)">EFF.org</a> directly.</div>`;
+    return;
+  }
+  renderFeed();
+}
+
+document.querySelectorAll('.feed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.feed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.source;
+    renderFeed();
+  });
+});
+
+loadFeeds();
+</script>
+</body>
+</html>
