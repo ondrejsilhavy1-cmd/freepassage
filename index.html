@@ -667,6 +667,79 @@ footer {
   .feed-grid { grid-template-columns: 1fr; }
   .feed-card { border-right: none; }
 }
+/* FAQ */
+.faq-wrap { border-bottom: var(--rule); }
+
+.faq-item {
+  border-bottom: 1px solid #ccc;
+}
+
+.faq-item:last-child { border-bottom: none; }
+
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.6rem 2rem;
+  cursor: pointer;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  gap: 2rem;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.faq-q:hover { background: #f0f0ee; }
+.faq-item.open .faq-q { background: var(--black); color: var(--white); }
+
+.faq-arrow {
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  color: var(--mid);
+}
+
+.faq-item.open .faq-arrow { transform: rotate(180deg); color: rgba(247,247,245,0.5); }
+
+.faq-a {
+  display: none;
+  padding: 2rem 2rem 2.5rem;
+  border-top: 1px solid #e0e0de;
+  background: var(--white);
+}
+
+.faq-item.open .faq-a { display: block; }
+
+.faq-a p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 1.1rem;
+  max-width: 80ch;
+}
+
+.faq-a p:last-child { margin-bottom: 0; }
+
+.faq-a strong { font-weight: 600; color: var(--black); }
+
+.faq-a a {
+  color: var(--mid);
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  transition: color 0.2s, border-color 0.2s;
+  font-family: var(--display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.faq-a a:hover { color: var(--black); border-color: var(--black); }
+
 </style>
 </head>
 <body>
@@ -679,7 +752,7 @@ footer {
     <li><a href="#manifesto">Manifesto</a></li>
     <li><a href="#who">Who</a></li>
     <li><a href="#tools">Tools</a></li>
-    <li><a href="#news">News</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="nav-right">No tracking · No cookies</div>
 </nav>
@@ -1065,21 +1138,166 @@ footer {
   </div>
 </div>
 
-<!-- FEED -->
-<div class="feed-wrap" id="news">
+  <div class="tool-category reveal">
+    <div class="tool-cat-header" onclick="toggleCat(this)">
+      <div class="tool-cat-num">G</div>
+      <div class="tool-cat-name">Privacy News Sources</div>
+      <div class="tool-cat-meta"><span>4 Sources</span><span class="tool-cat-arrow">▼</span></div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-idx">01</div>
+        <div class="tool-body">
+          <div class="tool-name">EFF Deeplinks</div>
+          <div class="tool-desc">The Electronic Frontier Foundation's blog covering digital rights, surveillance, legislation, and court cases. The most authoritative voice in the field since 1990.</div>
+          <a href="https://eff.org/deeplinks" target="_blank" rel="noopener" class="tool-url">eff.org/deeplinks ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">02</div>
+        <div class="tool-body">
+          <div class="tool-name">RestorePrivacy</div>
+          <div class="tool-desc">Practical, independent reviews of privacy tools alongside news on legislation, data breaches, and surveillance. Strong on VPN and browser analysis.</div>
+          <a href="https://restoreprivacy.com" target="_blank" rel="noopener" class="tool-url">restoreprivacy.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">03</div>
+        <div class="tool-body">
+          <div class="tool-name">Techdirt</div>
+          <div class="tool-desc">Long-form analysis of policy, tech law, and civil liberties. Consistently ahead of mainstream coverage on censorship, encryption, and government overreach.</div>
+          <a href="https://techdirt.com" target="_blank" rel="noopener" class="tool-url">techdirt.com ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-idx">04</div>
+        <div class="tool-body">
+          <div class="tool-name">MyPrivacy Blog</div>
+          <div class="tool-desc">Accessible, practical privacy guidance covering digital identity, OSINT, data breaches, and personal security. Good entry point for those new to the topic.</div>
+          <a href="https://www.myprivacy.blog" target="_blank" rel="noopener" class="tool-url">myprivacy.blog ↗</a>
+        </div>
+        <div class="tool-badges"><span class="badge badge-free">Free</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-wrap" id="faq">
   <div class="section-header">
     <div class="section-num">04</div>
-    <div class="section-title-bar">Intelligence — Live Feed, No Algorithm</div>
+    <div class="section-title-bar">Frequently Asked Questions</div>
   </div>
-  <div class="feed-controls">
-    <button class="feed-btn active" data-source="all">All Sources</button>
-    <button class="feed-btn" data-source="eff">EFF</button>
-    <button class="feed-btn" data-source="privacy">RestorePrivacy</button>
-    <button class="feed-btn" data-source="techdirt">Techdirt</button>
-    <button class="feed-btn" data-source="myprivacy">MyPrivacy</button>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>Why do we need privacy?</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>Privacy is not a feature of a free society — it is a precondition of one. Without the ability to think, communicate, and organise privately, there is no free press, no political opposition, no religious freedom, no space for dissent. Every authoritarian government in history has understood this, which is why surveillance is always one of its first tools.</p>
+      <p>On a personal level, privacy means you control your own narrative. It means an employer cannot see your medical history, an abuser cannot track your location, and a government cannot know which books you read or who you vote for. The erosion of privacy is not an abstract threat — it is the concrete narrowing of the space in which you live as a free person.</p>
+    </div>
   </div>
-  <div class="feed-grid" id="feedGrid">
-    <div class="feed-loading"><div class="spinner"></div>Fetching latest stories</div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>Wouldn't privacy tools be used by criminals?</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>Yes — and so would cars, phones, cash, and the postal service. Every general-purpose technology can be misused. The question is never whether a tool <em>can</em> enable harm, but whether the harm it enables outweighs the good it provides to the overwhelming majority who use it legitimately.</p>
+      <p>Privacy tools are used daily by journalists protecting sources, doctors safeguarding patient data, domestic abuse survivors hiding from abusers, activists in authoritarian states, lawyers maintaining client confidentiality, and billions of ordinary people who simply want to browse the internet without being profiled. Dismantling privacy infrastructure to catch criminals is like banning locks because burglars can also pick them. It leaves everyone else defenceless.</p>
+      <p>Criminals with sufficient motivation and resources will always find workarounds. The only lasting effect of weakening privacy tools is to leave law-abiding people exposed.</p>
+    </div>
+  </div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>I'm doing nothing wrong — so I have nothing to worry about.</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>This argument sounds reasonable and is almost entirely wrong. Three reasons:</p>
+      <p><strong>First, what counts as "wrong" changes.</strong> Homosexuality was illegal in most of the world within living memory. Political dissent is criminalised in dozens of countries today. Helping a woman obtain an abortion is a criminal offence in several US states. The definition of wrongdoing shifts constantly — and surveillance infrastructure built under one government is inherited by the next.</p>
+      <p><strong>Second, you are already being judged by data you don't control.</strong> Insurance premiums, loan approvals, job applications, and border crossings are all increasingly decided by algorithmic analysis of data you didn't know was being collected. "Nothing to hide" doesn't protect you from being misclassified, flagged, or discriminated against based on inferred attributes.</p>
+      <p><strong>Third, privacy is not only about you.</strong> When you communicate with others, you make privacy decisions on their behalf. Journalists, activists, and people in dangerous situations depend on their contacts maintaining operational security. Your indifference to privacy can cost someone else dearly.</p>
+      <p>As Edward Snowden put it: arguing that you have nothing to hide because you have nothing to fear is like saying you have nothing to say so you don't need freedom of speech.</p>
+    </div>
+  </div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>Doesn't age verification protect children online?</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>This is the most persuasive framing available for mandatory identity verification — and it deserves a serious answer, because the concern about children is genuine. But the proposed solution has four deep problems:</p>
+      <p><strong>It doesn't work.</strong> Age verification systems are bypassed trivially. Roblox's AI-powered face-scan system was defeated within days. Discord's verification was circumvented with freely available browser tools. A determined teenager faces a fifteen-minute inconvenience, while everyone else loses their anonymity permanently. <a href="https://www.wired.com/story/robloxs-ai-powered-age-verification-is-a-complete-mess/" target="_blank" rel="noopener">Wired ↗</a> <a href="https://www.pcgamer.com/hardware/someone-has-already-made-a-free-in-browser-3d-model-to-bypass-discord-age-verification-that-works-on-any-potato-computer/" target="_blank" rel="noopener">PC Gamer ↗</a></p>
+      <p><strong>It creates catastrophic security risks.</strong> Any system that verifies identity at scale becomes a database of who is online, when, and what they access. These databases are breached — it is not a question of if but when. A breach at a major identity verification provider in early 2026 exposed millions of users' personal data. <a href="https://fortune.com/2026/02/24/discord-peter-thiel-backed-persona-identity-verification-breach/" target="_blank" rel="noopener">Fortune ↗</a> <a href="https://www.newamerica.org/oti/reports/age-verification-the-complicated-effort-to-protect-youth-online/challenges-with-age-verification/" target="_blank" rel="noopener">New America ↗</a></p>
+      <p><strong>It is inaccurate in both directions.</strong> Biometric age estimation misclassifies adults as minors and minors as adults at significant rates, as trials for Australia's under-16 social media ban demonstrated. Adults lose access to legal content; the systems they were designed to protect children from remain porous. <a href="https://www.theguardian.com/news/2025/sep/19/how-accurate-are-age-checks-for-australias-under-16s-social-media-ban-what-trial-data-reveals" target="_blank" rel="noopener">The Guardian ↗</a></p>
+      <p><strong>It pushes children somewhere worse.</strong> When mainstream platforms become inaccessible, young people don't stop going online — they migrate to less visible spaces with fewer rules, less moderation, and no accountability. The platforms most likely to harm children are exactly the ones least likely to implement compliant age verification. Locking the front door of the internet does not protect anyone; it redirects them to the back alleys.</p>
+      <p>Child safety is a real goal. Mandatory internet-wide identity verification is not the tool — it is the pretext. The infrastructure it creates survives long after the stated justification is forgotten.</p>
+    </div>
+  </div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>If encryption is banned, wouldn't that make us safer from terrorism?</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>This is the "going dark" argument, and law enforcement agencies have deployed it persistently for thirty years. It is also, on examination, almost entirely wrong.</p>
+      <p><strong>Weakening encryption doesn't weaken it only for terrorists.</strong> Encryption is mathematics. You cannot create a backdoor that only the good guys can use — a vulnerability by definition can be exploited by anyone who finds it. Every security researcher, cryptographer, and intelligence agency that has examined this proposal has reached the same conclusion: there is no such thing as a secure backdoor. When the FBI pushed Apple for a key to the San Bernardino iPhone, the consensus from the cryptography community was unanimous.</p>
+      <p><strong>Terrorists adapt; civilians don't.</strong> Determined adversaries — state-sponsored groups, organised criminals, serious terrorist networks — have the resources and motivation to use non-backdoored encryption, develop their own tools, or communicate through jurisdictions where backdoors don't apply. The practical effect of encryption bans is to leave ordinary citizens, businesses, hospitals, banks, and critical infrastructure exposed while sophisticated bad actors route around the restriction within days.</p>
+      <p><strong>The intelligence failures that precede major attacks are almost never about encryption.</strong> Post-attack investigations routinely reveal that agencies had prior information they failed to act on, not that communications were unreadable. The problem is analytical capacity and inter-agency coordination, not the existence of encryption. Sacrificing the security of billions of people to solve a problem that isn't actually encryption is a very poor trade.</p>
+      <p>Strong encryption is what keeps your banking, your medical records, your messages, and critical national infrastructure secure. Banning it to catch terrorists would be like banning locks to catch burglars — and finding that the burglars simply brought bolt cutters.</p>
+    </div>
+  </div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>Are these tools legal?</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>In most democratic countries: yes, unambiguously. Using a VPN, running Tor, encrypting your messages, and transacting in privacy-focused cryptocurrency are all legal activities in the European Union, the United States, the United Kingdom, Canada, Australia, and the vast majority of the world's democracies. Signal, ProtonMail, and Firefox are consumer products used by hundreds of millions of people daily.</p>
+      <p>There are exceptions worth knowing about. Russia formally restricted VPN usage in 2017 and has tightened controls since. China operates the Great Firewall and technically prohibits unauthorised VPN use, though enforcement is uneven. Iran, North Korea, Belarus, and a handful of other authoritarian states restrict or ban privacy tools outright.</p>
+      <p>Note what this list tells you. The countries that ban privacy tools are also the countries with the worst human rights records, the most imprisoned journalists, and the most surveilled populations. The correlation is not coincidental — it is causal. <strong>A government that bans privacy tools is a government that fears what its citizens might say in private.</strong> The legality of these tools in your country is itself a data point about the character of your government.</p>
+      <p>If you are in a country where these tools are restricted: the tools still work, and many people in those countries use them anyway. That is precisely what this site is for.</p>
+    </div>
+  </div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>Where do I start? This feels overwhelming.</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>It is less overwhelming than it looks. You do not need to do everything at once, and partial privacy is still genuinely valuable. Think of it as four steps, each one meaningful on its own:</p>
+      <p><strong>Step 1 — Browser.</strong> Switch to Firefox with uBlock Origin, LibreWolf, or Brave. This is a five-minute change that immediately stops the majority of third-party tracking, ad networks, and data collection that happens every time you open a webpage. If you do nothing else, do this.</p>
+      <p><strong>Step 2 — Search.</strong> Replace Google with DuckDuckGo or SearXNG. Google's core business model is building a profile of your interests, health concerns, political views, and personal relationships from your search history. DuckDuckGo keeps none of it. The search results are good enough for almost everything.</p>
+      <p><strong>Step 3 — Messaging.</strong> Install Signal and start using it with the people you communicate with most. One conversation moved to Signal is one conversation that can no longer be subpoenaed, sold, or hacked from a corporate server. You don't need to convince everyone — even a few key relationships matter.</p>
+      <p><strong>Step 4 — VPN.</strong> Add Mullvad or Proton VPN for situations where your network itself is untrustworthy: public wifi, your ISP selling your browsing history, or accessing content across borders. A VPN is not a silver bullet, but it meaningfully raises the cost of casual surveillance.</p>
+      <p>Those four steps cover the vast majority of everyday exposure for most people. Everything else in the toolkit — Monero, Tails OS, Qubes — exists for specific threat models. Start with step one today.</p>
+    </div>
+  </div>
+
+  <div class="faq-item reveal">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span>Isn't this already a lost cause? Big Tech knows everything anyway.</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a">
+      <p>This is the most understandable objection and the most important one to push back on. Defeatism is the most effective tool surveillance has — it requires no coercion, just the widespread belief that resistance is futile.</p>
+      <p><strong>Partial privacy is real privacy.</strong> The goal is not to become invisible — it is to raise the cost of surveillance. Mass surveillance works because it is cheap: harvesting data from billions of people at essentially zero marginal cost per person. Every technical barrier you introduce — an encrypted message, a VPN connection, a browser that blocks trackers — increases the cost of surveilling you specifically. When enough people do this, mass surveillance becomes mass expensive surveillance, which is qualitatively different.</p>
+      <p><strong>Data minimisation matters even when it's incomplete.</strong> A company that doesn't have your search history can't sell it, leak it, or hand it to a government. A message encrypted end-to-end can't be read in a data breach. A transaction in Monero can't be frozen by a financial institution. Each tool you use removes one category of exposure, permanently, regardless of what other data exists about you elsewhere.</p>
+      <p><strong>The landscape is not static.</strong> Privacy tools are getting better, faster, and easier to use. Regulatory pressure is increasing. Public awareness is growing. The argument that "it's too late" was made in 2013 after Snowden, in 2018 after Cambridge Analytica, and will be made again after the next scandal. It has never been true. The people building Signal, Tor, Monero, and the rest are not losing — they are winning incrementally, on technical grounds, against adversaries with vastly more resources.</p>
+      <p>You cannot opt out of every system. You can make yourself significantly harder to surveil than the average person, protect your most sensitive communications, and support the infrastructure that makes privacy possible for everyone. That is not a lost cause. It is the only cause worth having.</p>
+    </div>
   </div>
 </div>
 
@@ -1118,6 +1336,9 @@ document.querySelectorAll('a, button, .tool-cat-header, .who-card').forEach(el =
 // Accordions
 function toggleCat(h) { h.parentElement.classList.toggle('open'); }
 
+// FAQ accordion
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
 // Scroll reveal
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
@@ -1128,112 +1349,6 @@ const obs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.07 });
 document.querySelectorAll('.reveal, .manifesto-p').forEach(el => obs.observe(el));
-
-// RSS
-const FEEDS = {
-  eff:       { name: 'EFF',            url: 'https://www.eff.org/rss/updates.xml' },
-  privacy:   { name: 'RestorePrivacy', url: 'https://restoreprivacy.com/feed/' },
-  techdirt:  { name: 'Techdirt',       url: 'https://www.techdirt.com/feed/' },
-  myprivacy: { name: 'MyPrivacy',      url: 'https://www.myprivacy.blog/rss/' }
-};
-
-let allItems = [], currentFilter = 'all';
-
-async function fetchWithProxy(feedUrl) {
-  // Try multiple CORS proxies in sequence
-  const proxies = [
-    url => `https://api.rss2json.com/v1.api.json?rss_url=${encodeURIComponent(url)}&count=8`,
-    url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-  ];
-
-  // Try rss2json first (returns clean JSON)
-  try {
-    const r = await fetch(proxies[0](feedUrl), { signal: AbortSignal.timeout(8000) });
-    const d = await r.json();
-    if (d.status === 'ok' && d.items?.length) {
-      return d.items.map(item => ({
-        title: item.title?.trim() || '',
-        desc: (item.description || item.content || '').replace(/<[^>]+>/g, '').trim().slice(0, 180),
-        link: item.link || '#',
-        date: item.pubDate || ''
-      }));
-    }
-  } catch(e) {}
-
-  // Fallback: allorigins + XML parse
-  try {
-    const r = await fetch(proxies[1](feedUrl), { signal: AbortSignal.timeout(8000) });
-    const d = await r.json();
-    const xml = new DOMParser().parseFromString(d.contents, 'text/xml');
-    const items = [...xml.querySelectorAll('item')].slice(0, 8);
-    if (!items.length) throw new Error('no items');
-    return items.map(item => ({
-      title: item.querySelector('title')?.textContent?.trim() || '',
-      desc: (item.querySelector('description')?.textContent || '').replace(/<[^>]+>/g, '').trim().slice(0, 180),
-      link: item.querySelector('link')?.textContent?.trim() || '#',
-      date: item.querySelector('pubDate')?.textContent || ''
-    }));
-  } catch(e) {}
-
-  return [];
-}
-
-async function fetchFeed(key, feed) {
-  try {
-    const items = await fetchWithProxy(feed.url);
-    return items.map(item => ({ ...item, source: feed.name, sourceKey: key }));
-  } catch(e) { return []; }
-}
-
-function fmtDate(d) {
-  if (!d) return '';
-  try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
-  catch(e) { return ''; }
-}
-
-function renderFeed() {
-  const grid = document.getElementById('feedGrid');
-  const items = currentFilter === 'all' ? allItems : allItems.filter(i => i.sourceKey === currentFilter);
-  if (!items.length) {
-    grid.innerHTML = '<div class="feed-loading" style="animation:none">No stories found.</div>';
-    return;
-  }
-  grid.innerHTML = items.slice(0, 12).map(item => `
-    <div class="feed-card">
-      <div class="feed-source">${item.source}</div>
-      <div class="feed-title">${item.title}</div>
-      <div class="feed-desc">${item.desc}</div>
-      <div class="feed-date">${fmtDate(item.date)}</div>
-      <a href="${item.link}" target="_blank" rel="noopener" aria-label="${item.title}"></a>
-    </div>
-  `).join('');
-  document.querySelectorAll('.feed-card').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-  });
-}
-
-async function loadFeeds() {
-  const results = await Promise.allSettled(Object.entries(FEEDS).map(([k,f]) => fetchFeed(k,f)));
-  allItems = results.filter(r => r.status === 'fulfilled').flatMap(r => r.value)
-    .sort((a,b) => new Date(b.date) - new Date(a.date));
-  if (!allItems.length) {
-    document.getElementById('feedGrid').innerHTML = `<div class="feed-loading" style="animation:none">Feeds unavailable. Visit <a href="https://eff.org" target="_blank" style="color:var(--black)">EFF.org</a> directly.</div>`;
-    return;
-  }
-  renderFeed();
-}
-
-document.querySelectorAll('.feed-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.feed-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.source;
-    renderFeed();
-  });
-});
-
-loadFeeds();
 </script>
 </body>
 </html>
