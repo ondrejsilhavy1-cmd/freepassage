@@ -679,7 +679,6 @@ footer {
     <li><a href="#manifesto">Manifesto</a></li>
     <li><a href="#who">Who</a></li>
     <li><a href="#tools">Tools</a></li>
-    <li><a href="#markets">Markets</a></li>
     <li><a href="#news">News</a></li>
   </ul>
   <div class="nav-right">No tracking · No cookies</div>
@@ -1037,20 +1036,10 @@ footer {
         <div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-open">Open src</span></div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- MARKETS -->
-<div class="tools-wrap" id="markets">
-  <div class="section-header">
-    <div class="section-num">04</div>
-    <div class="section-title-bar">Markets — Spend & Trade Without Surveillance</div>
-  </div>
-
-  <div class="tool-category open reveal">
+  <div class="tool-category reveal">
     <div class="tool-cat-header" onclick="toggleCat(this)">
       <div class="tool-cat-num">F</div>
-      <div class="tool-cat-name">Privacy-Respecting Markets & Directories</div>
+      <div class="tool-cat-name">Markets & No-KYC Directories</div>
       <div class="tool-cat-meta"><span>2 Resources</span><span class="tool-cat-arrow">▼</span></div>
     </div>
     <div class="tool-list">
@@ -1079,7 +1068,7 @@ footer {
 <!-- FEED -->
 <div class="feed-wrap" id="news">
   <div class="section-header">
-    <div class="section-num">05</div>
+    <div class="section-num">04</div>
     <div class="section-title-bar">Intelligence — Live Feed, No Algorithm</div>
   </div>
   <div class="feed-controls">
@@ -1087,6 +1076,7 @@ footer {
     <button class="feed-btn" data-source="eff">EFF</button>
     <button class="feed-btn" data-source="privacy">RestorePrivacy</button>
     <button class="feed-btn" data-source="techdirt">Techdirt</button>
+    <button class="feed-btn" data-source="myprivacy">MyPrivacy</button>
   </div>
   <div class="feed-grid" id="feedGrid">
     <div class="feed-loading"><div class="spinner"></div>Fetching latest stories</div>
@@ -1141,25 +1131,57 @@ document.querySelectorAll('.reveal, .manifesto-p').forEach(el => obs.observe(el)
 
 // RSS
 const FEEDS = {
-  eff: { name: 'EFF', url: 'https://www.eff.org/rss/updates.xml' },
-  privacy: { name: 'RestorePrivacy', url: 'https://restoreprivacy.com/feed/' },
-  techdirt: { name: 'Techdirt', url: 'https://www.techdirt.com/feed/' }
+  eff:       { name: 'EFF',            url: 'https://www.eff.org/rss/updates.xml' },
+  privacy:   { name: 'RestorePrivacy', url: 'https://restoreprivacy.com/feed/' },
+  techdirt:  { name: 'Techdirt',       url: 'https://www.techdirt.com/feed/' },
+  myprivacy: { name: 'MyPrivacy',      url: 'https://www.myprivacy.blog/rss/' }
 };
 
 let allItems = [], currentFilter = 'all';
 
-async function fetchFeed(key, feed) {
+async function fetchWithProxy(feedUrl) {
+  // Try multiple CORS proxies in sequence
+  const proxies = [
+    url => `https://api.rss2json.com/v1.api.json?rss_url=${encodeURIComponent(url)}&count=8`,
+    url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+  ];
+
+  // Try rss2json first (returns clean JSON)
   try {
-    const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`);
+    const r = await fetch(proxies[0](feedUrl), { signal: AbortSignal.timeout(8000) });
+    const d = await r.json();
+    if (d.status === 'ok' && d.items?.length) {
+      return d.items.map(item => ({
+        title: item.title?.trim() || '',
+        desc: (item.description || item.content || '').replace(/<[^>]+>/g, '').trim().slice(0, 180),
+        link: item.link || '#',
+        date: item.pubDate || ''
+      }));
+    }
+  } catch(e) {}
+
+  // Fallback: allorigins + XML parse
+  try {
+    const r = await fetch(proxies[1](feedUrl), { signal: AbortSignal.timeout(8000) });
     const d = await r.json();
     const xml = new DOMParser().parseFromString(d.contents, 'text/xml');
-    return [...xml.querySelectorAll('item')].slice(0, 8).map(item => ({
-      source: feed.name, sourceKey: key,
+    const items = [...xml.querySelectorAll('item')].slice(0, 8);
+    if (!items.length) throw new Error('no items');
+    return items.map(item => ({
       title: item.querySelector('title')?.textContent?.trim() || '',
       desc: (item.querySelector('description')?.textContent || '').replace(/<[^>]+>/g, '').trim().slice(0, 180),
       link: item.querySelector('link')?.textContent?.trim() || '#',
       date: item.querySelector('pubDate')?.textContent || ''
     }));
+  } catch(e) {}
+
+  return [];
+}
+
+async function fetchFeed(key, feed) {
+  try {
+    const items = await fetchWithProxy(feed.url);
+    return items.map(item => ({ ...item, source: feed.name, sourceKey: key }));
   } catch(e) { return []; }
 }
 
