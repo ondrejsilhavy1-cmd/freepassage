@@ -102,3 +102,6 @@ Because the site is one static file, any static host works with no build command
 - **No mobile navigation:** at ≤600px the nav links are hidden and nothing replaces them.
 - Section numbers, category letters and tool counts are all hard-coded and must be kept in sync by hand.
 - There is no README, LICENSE, favicon, or social/OpenGraph meta tags.
+
+## Repo hygiene
+- `.gitignore` excludes `.env` files, OS/editor clutter and local tool folders (.vercel, .wrangler, node_modules). Keep secrets out of the repo.
